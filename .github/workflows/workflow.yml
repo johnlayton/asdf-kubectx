@@ -1,0 +1,50 @@
+name: main
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest]
+        rclone: [0.7.1]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install asdf
+        run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
+
+      - name: Install Rclone and print version
+        run: |
+          . $HOME/asdf/asdf.sh
+          asdf plugin-add kubectx $GITHUB_WORKSPACE
+          asdf install kubectx ${{ matrix.rclone }}
+          asdf global kubectx ${{ matrix.rclone }}
+          kubectx --version
+  test:
+    runs-on: macOS-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Install asdf
+        run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
+
+      - name: Test plugin
+        env:
+          GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          . $HOME/asdf/asdf.sh
+          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --version' --asdf-tool-version ${{matrix.rclone}}
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run ShellCheck
+        run: shellcheck bin/*
