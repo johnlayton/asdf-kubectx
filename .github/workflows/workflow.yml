@@ -48,15 +48,15 @@ jobs:
         run: |
           . $HOME/asdf/asdf.sh
           asdf plugin-add kubectl
-          asdf install kubectl ${{ matrix.kubectl }}
-          asdf global kubectl ${{ matrix.kubectl }}
+          asdf install kubectl 1.16.3
+          asdf global kubectl 1.16.3
 
       - name: Test plugin
         env:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . $HOME/asdf/asdf.sh
-          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --help' --asdf-tool-version ${{ matrix.kubectx }}
+          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --help' --asdf-tool-version 0.7.1
 
   lint:
     runs-on: ubuntu-latest
