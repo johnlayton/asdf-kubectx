@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest]
-        rclone: [0.7.1]
+        kubectx: [0.7.1]
 
     runs-on: ${{ matrix.os }}
 
@@ -18,13 +18,13 @@ jobs:
       - name: Install asdf
         run: git clone https://github.com/asdf-vm/asdf.git $HOME/asdf
 
-      - name: Install Rclone and print version
+      - name: Install Kubectx and print help
         run: |
           . $HOME/asdf/asdf.sh
           asdf plugin-add kubectx $GITHUB_WORKSPACE
-          asdf install kubectx ${{ matrix.rclone }}
-          asdf global kubectx ${{ matrix.rclone }}
-          kubectx --version
+          asdf install kubectx ${{ matrix.kubectx }}
+          asdf global kubectx ${{ matrix.kubectx }}
+          kubectx --help
   test:
     runs-on: macOS-latest
 
@@ -40,7 +40,7 @@ jobs:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . $HOME/asdf/asdf.sh
-          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --version' --asdf-tool-version ${{matrix.rclone}}
+          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --version' --asdf-tool-version ${{matrix.kubectx}}
   lint:
     runs-on: ubuntu-latest
 
