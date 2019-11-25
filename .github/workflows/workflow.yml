@@ -22,6 +22,7 @@ jobs:
       - name: Install kubectx and print help
         run: |
           . $HOME/asdf/asdf.sh
+          asdf plugin-add kubectl
           asdf plugin-add kubectx $GITHUB_WORKSPACE
           asdf install kubectl ${{ matrix.kubectl }}
           asdf global kubectl ${{ matrix.kubectl }}
@@ -45,7 +46,7 @@ jobs:
         run: |
           . $HOME/asdf/asdf.sh
           asdf install kubectl ${{ matrix.kubectl }}
-          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --help' --asdf-tool-version ${{matrix.kubectx}}
+          asdf plugin-test kubectx $GITHUB_WORKSPACE 'kubectx --help' --asdf-tool-version ${{ matrix.kubectx }}
 
   lint:
     runs-on: ubuntu-latest
