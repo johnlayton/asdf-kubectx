@@ -16,5 +16,3 @@ install_kubectx() {
 }
 
 install_kubectx "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
-
-asdf reshim kubectx "$ASDF_INSTALL_VERSION"
